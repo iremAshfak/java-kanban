@@ -47,7 +47,7 @@ public class Main {
 
         System.out.println("// Тест 5: Выводим список подзадач определенного эпика");
         System.out.println();
-        System.out.println("Список подзадач эпика: " + taskManager.getSubtasksByEpic(2));
+        System.out.println("Список подзадач эпика: " + taskManager.getSubtasksByEpicId(2));
 
         System.out.println("// Тест 6: Выводим списки всех типов задач после всех изменений");
         System.out.println();

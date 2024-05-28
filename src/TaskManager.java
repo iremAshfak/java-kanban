@@ -91,7 +91,8 @@ public class TaskManager {
         for (HashMap.Entry<Integer, Epic> entry : epics.entrySet()) {
             Epic epic = entry.getValue();
             if (!epic.getSubtasksIds().isEmpty()) {  // Если у эпика есть хотя бы 1 подзадача
-                epic.getSubtasksIds().clear();  // очищаем список подзадач у эпика
+                epic.getSubtasksIds().clear(); // очищаем список подзадач у эпика
+                checkEpicStatus(epic); //обновляем статус эпика
             }
         }
         return subtasks.isEmpty();
@@ -137,7 +138,7 @@ public class TaskManager {
         return subtasks.remove(taskId) != null;
     }
 
-    public ArrayList<Subtask> getSubtasksByEpic(Integer epicId) {
+    public ArrayList<Subtask> getSubtasksByEpicId(Integer epicId) {
         ArrayList<Subtask> subtasksByEpic = new ArrayList<>();
         Epic epic = getEpic(epicId);
         for (Integer subtaskId : epic.getSubtasksIds()) {
@@ -147,33 +148,33 @@ public class TaskManager {
         return subtasksByEpic;
     }
 
-    public void checkEpicStatus(Epic epic) { // Метод для проверки статуса эпика
-        int checkNew = 0;
-        int checkDone = 0;
-        int checkInProgress = 0;
+    private void checkEpicStatus(Epic epic) { // Метод для проверки статуса эпика
+        int countNew = 0;
+        int countDone = 0;
+        int countInProgress = 0;
         if (epic.getSubtasksIds().isEmpty()) {
             return;
         }
         for (Integer subtaskId : epic.getSubtasksIds()) {
             Subtask subtask = subtasks.get(subtaskId);
             if (subtask.getStatus() == Status.NEW) {
-                checkNew++;
+                countNew++;
             } else if (subtask.getStatus() == Status.DONE) {
-                checkDone++;
+                countDone++;
             } else if (subtask.getStatus() == Status.IN_PROGRESS) {
-                checkInProgress++;
+                countInProgress++;
             }
         }
-        if (checkDone == epic.getSubtasksIds().size()) { // Если все подзадачи имеют статус DONE
+        if (countDone == epic.getSubtasksIds().size()) { // Если все подзадачи имеют статус DONE
             epic.setStatus(Status.DONE);
-        } else if (checkNew == epic.getSubtasksIds().size()) { // Если все подзадачи имеют статус NEW
+        } else if (countNew == epic.getSubtasksIds().size()) { // Если все подзадачи имеют статус NEW
             epic.setStatus(Status.NEW);
         } else { // В любом другом случае
             epic.setStatus(Status.IN_PROGRESS);
         }
     }
 
-    public int getNextId() {
+    private int getNextId() {
         return nextId++;
     }
 }
