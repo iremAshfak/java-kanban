@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
-public class TaskManager {
+public class InMemoryTaskManager implements TaskManager {
+    InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
@@ -9,25 +11,31 @@ public class TaskManager {
     private Integer taskId;
 
     // Методы для задач
+    @Override
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
 
+    @Override
     public boolean deleteTasks() {
         tasks.clear();
         return tasks.isEmpty();
     }
 
+    @Override
     public Task getTask(Integer taskId) {
+        historyManager.add(tasks.get(taskId));
         return tasks.get(taskId);
     }
 
+    @Override
     public Task createTask(Task task) {
         task.setId(getNextId());
         tasks.put(task.getId(), task);
         return task;
     }
 
+    @Override
     public Task updateTask(Task task) {
         taskId = task.getId();
         if (taskId == null || !tasks.containsKey(taskId)) {
@@ -37,15 +45,18 @@ public class TaskManager {
         return task;
     }
 
+    @Override
     public boolean deleteTask(Integer taskId) {
         return tasks.remove(taskId) != null;
     }
 
     // Методы для эпиков
+    @Override
     public ArrayList<Epic> getEpics() {
         return new ArrayList<>(epics.values());
     }
 
+    @Override
     public boolean deleteEpics() {
         epics.clear();
         deleteSubtasks(); /* Т.к. подзадачи не могут существовать без эпика, при удалении всех эпиков,
@@ -53,10 +64,13 @@ public class TaskManager {
         return epics.isEmpty();
     }
 
+    @Override
     public Epic getEpic(Integer taskId) {
+        historyManager.add(epics.get(taskId));
         return epics.get(taskId);
     }
 
+    @Override
     public Epic createEpic(Epic epic) {
         epic.setStatus(Status.NEW); // У всех новых эпиков статус NEW устанавливается по умолчанию
         epic.setId(getNextId());
@@ -64,6 +78,7 @@ public class TaskManager {
         return epic;
     }
 
+    @Override
     public Epic updateEpic(Epic epic) {
         taskId = epic.getId();
         if (taskId == null || !epics.containsKey(taskId)) {
@@ -73,6 +88,7 @@ public class TaskManager {
         return epic;
     }
 
+    @Override
     public boolean deleteEpic(Integer taskId) {
         Epic epic = epics.get(taskId);
         for (Integer subtaskId : epic.getSubtasksIds()) {
@@ -82,10 +98,12 @@ public class TaskManager {
     }
 
     // Методы для подзадач
+    @Override
     public ArrayList<Subtask> getSubtasks() {
         return new ArrayList<>(subtasks.values());
     }
 
+    @Override
     public boolean deleteSubtasks() {
         subtasks.clear();
         for (HashMap.Entry<Integer, Epic> entry : epics.entrySet()) {
@@ -98,10 +116,13 @@ public class TaskManager {
         return subtasks.isEmpty();
     }
 
+    @Override
     public Subtask getSubtask(Integer taskId) {
+        historyManager.add(subtasks.get(taskId));
         return subtasks.get(taskId);
     }
 
+    @Override
     public Subtask createSubtask(Subtask subtask) {
         for (HashMap.Entry<Integer, Epic> entry : epics.entrySet()) { // Для каждой пары id и эпика
             if (subtask.getEpicId() == entry.getKey()) { // если подзадача принадлежит данному эпику
@@ -116,6 +137,7 @@ public class TaskManager {
     }
 
 
+    @Override
     public Subtask updateSubtask(Subtask subtask) {
         taskId = subtask.getId();
         if (taskId == null || !subtasks.containsKey(taskId)) {
@@ -131,6 +153,7 @@ public class TaskManager {
         return subtask;
     }
 
+    @Override
     public boolean deleteSubtask(Integer taskId) {
         int epicId = subtasks.get(taskId).getEpicId(); // находим id эпика подзадачи
         epics.get(epicId).getSubtasksIds().remove("taskId"); // удаляем из списка эпика нужную подзадачу
@@ -138,6 +161,7 @@ public class TaskManager {
         return subtasks.remove(taskId) != null;
     }
 
+    @Override
     public ArrayList<Subtask> getSubtasksByEpicId(Integer epicId) {
         ArrayList<Subtask> subtasksByEpic = new ArrayList<>();
         Epic epic = getEpic(epicId);
@@ -147,6 +171,7 @@ public class TaskManager {
         }
         return subtasksByEpic;
     }
+
 
     private void checkEpicStatus(Epic epic) { // Метод для проверки статуса эпика
         int countNew = 0;
