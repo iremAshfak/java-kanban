@@ -1,14 +1,13 @@
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 
-class InMemoryTaskManagerTest {
+public class InMemoryTaskManagerTest {
 
     TaskManager taskManager = Managers.getDefault();
 
     @Test
-    void createTaskTest() {
+    public void createTaskTest() {
         Task task = new Task("Test createTask", "Test createTask description", Status.NEW);
         final int taskId = taskManager.createTask(task).getId();
         final Task savedTask = taskManager.getTask(taskId);
@@ -24,7 +23,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void createEpicTest() {
+    public void createEpicTest() {
         Epic epic = new Epic("Test createEpic", "Test createEpic description");
         final int epicId = taskManager.createEpic(epic).getId();
         final Epic savedEpic = taskManager.getEpic(epicId);
@@ -39,7 +38,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void createSubtaskTest() {
+    public void createSubtaskTest() {
         taskManager.createEpic(new Epic("Test createSubtask", "Test createSubtask description"));
         Subtask subtask = new Subtask("Test createSubtask", "Test createSubtask description", Status.NEW, 0);
         final int subtaskId = taskManager.createSubtask(subtask).getId();
@@ -55,37 +54,37 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void updateTaskTest() {
+    public void updateTaskTest() {
         Task task = new Task("Test updateTask", "Test updateTask description", Status.NEW);
         taskManager.createTask(task);
-        Task updated_task = new Task("Test updateTask", "Test updateTask description", Status.IN_PROGRESS, task.getId());
-        taskManager.updateTask(updated_task);
+        Task updatedTask = new Task("Test updateTask", "Test updateTask description", Status.IN_PROGRESS, task.getId());
+        taskManager.updateTask(updatedTask);
         final ArrayList<Task> tasks = taskManager.getTasks();
         Task savedTask = taskManager.getTask(task.getId());
 
-        assertEquals(updated_task, savedTask, "Задачи не совпадают.");
+        assertEquals(updatedTask, savedTask, "Задачи не совпадают.");
 
         assertEquals(1, tasks.size(), "Неверное количество задач.");
     }
 
     @Test
-    void updateSubtaskTest() {
+    public void updateSubtaskTest() {
         Epic epic = new Epic("Test updateSubtask", "Test updateSubtask description");
         taskManager.createEpic(epic);
         Subtask subtask = new Subtask("Test updateSubtask", "Test updateSubtask description", Status.NEW, epic.getId());
         taskManager.createSubtask(subtask);
-        Subtask updated_subtask = new Subtask("Test updateSubtask", "Test updateSubtask description", Status.IN_PROGRESS, subtask.getId(),epic.getId());
-        taskManager.updateSubtask(updated_subtask);
+        Subtask updatedSubtask = new Subtask("Test updateSubtask", "Test updateSubtask description", Status.IN_PROGRESS, subtask.getId(),epic.getId());
+        taskManager.updateSubtask(updatedSubtask);
         final ArrayList<Subtask> subtasks = taskManager.getSubtasks();
         Subtask savedSubtask = taskManager.getSubtask(subtask.getId());
 
-        assertEquals(updated_subtask, savedSubtask, "Задачи не совпадают.");
+        assertEquals(updatedSubtask, savedSubtask, "Задачи не совпадают.");
 
         assertEquals(1, subtasks.size(), "Неверное количество задач.");
     }
 
     @Test
-    void deleteTaskTest() {
+    public void deleteTaskTest() {
         Task task1 = new Task("Test deleteTask1", "Test deleteTask1 description", Status.NEW);
         Task task2 = new Task("Test deleteTask2", "Test deleteTask2 description", Status.NEW);
         final int taskId1 = taskManager.createTask(task1).getId();
@@ -98,7 +97,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void deleteEpicTest() {
+    public void deleteEpicTest() {
         Epic epic1 = new Epic("Test deleteEpic1", "Test deleteEpic1 description");
         Epic epic2 = new Epic("Test deleteEpic2", "Test deleteEpic2 description");
         final int epicId1 = taskManager.createEpic(epic1).getId();
@@ -112,7 +111,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void deleteSubtaskTest() {
+    public void deleteSubtaskTest() {
         Epic epic = new Epic("Test updateEpic", "Test updateEpic description");
         taskManager.createEpic(epic);
         Subtask subtask1 = new Subtask("Test deleteSubtask1", "Test deleteSubtask1 description", Status.NEW, epic.getId());
@@ -128,7 +127,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void task1ShouldBeEqualTask2() {
+    public void task1ShouldBeEqualTask2() {
         Task task1 = new Task("Test task1EqualTask2", "Test task1EqualTask2 description", Status.NEW);
         taskManager.createTask(task1);
         Task task2 = new Task("Task1EqualTask2", "Task1EqualTask2", Status.NEW, task1.getId());
@@ -136,7 +135,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void subtask1ShouldBeEqualSubtask2() {
+    public void subtask1ShouldBeEqualSubtask2() {
         Epic epic = new Epic("Epic", "Test Epic");
         taskManager.createEpic(epic);
         Subtask subtask1 = new Subtask("Test subtask1EqualSubtask2", "Test subtask1EqualSubtask2 description", Status.NEW, epic.getId());
@@ -145,14 +144,24 @@ class InMemoryTaskManagerTest {
         assertTrue(subtask1.getId().equals(subtask2.getId()));
     }
 
+    @Test
+    public void EpicShouldBeEmpty() {
+        Epic epic = new Epic("Epic", "Test Epic");
+        taskManager.createEpic(epic);
+        Subtask subtask1 = new Subtask("Test EpicShouldBeEmpty", "Test EpicShouldBeEmpty description", Status.NEW, epic.getId());
+        taskManager.createSubtask(subtask1);
+        taskManager.deleteSubtask(subtask1.getId());
+        assertTrue(epic.getSubtasksIds().isEmpty());
+    }
+
     /* @Test
-    void epicAsSubtaskShouldBeFailed() {
+    public void epicAsSubtaskShouldBeFailed() {
         Epic epic = taskManager.createEpic(new Epic("Test epicAsSubtask", "Test epicAsSubtask description"));
         taskManager.createSubtask(epic);
     }
 
     @Test
-    void subtaskAsEpicShouldBeFailed() {
+    public void subtaskAsEpicShouldBeFailed() {
         Subtask subtask = new Subtask("Test subtaskAsEpic", "Test subtaskAsEpic description", Status.NEW, subtask.getId());
     }
 */

@@ -1,16 +1,16 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-class ManagersTest {
+public class ManagersTest {
 
     @Test
-    void testGetDefaultInMemoryTaskManager() {
+    public void testGetDefaultInMemoryTaskManager() {
         TaskManager taskManager = Managers.getDefault();
         assertEquals(taskManager.getClass(), InMemoryTaskManager.class);
     }
 
     @Test
-    void testGetDefaultInMemoryHistoryManager() {
+    public void testGetDefaultInMemoryHistoryManager() {
         HistoryManager historyManager = Managers.getDefaultHistory();
         assertEquals(historyManager.getClass(), InMemoryHistoryManager.class);
     }

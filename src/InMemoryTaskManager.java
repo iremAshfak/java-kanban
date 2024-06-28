@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getDefaultHistory();
@@ -47,6 +46,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public boolean deleteTask(Integer taskId) {
+        historyManager.remove(taskId);
         return tasks.remove(taskId) != null;
     }
 
@@ -94,6 +94,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (Integer subtaskId : epic.getSubtasksIds()) {
             subtasks.remove(subtaskId); // При удалении эпика удаляем также все его подзадачи
         }
+        historyManager.remove(taskId);
         return epics.remove(taskId) != null;
     }
 
@@ -113,6 +114,7 @@ public class InMemoryTaskManager implements TaskManager {
                 checkEpicStatus(epic); //обновляем статус эпика
             }
         }
+
         return subtasks.isEmpty();
     }
 
@@ -156,8 +158,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public boolean deleteSubtask(Integer taskId) {
         int epicId = subtasks.get(taskId).getEpicId(); // находим id эпика подзадачи
-        epics.get(epicId).getSubtasksIds().remove("taskId"); // удаляем из списка эпика нужную подзадачу
+        epics.get(epicId).getSubtasksIds().remove(taskId); // удаляем из списка эпика нужную подзадачу
         checkEpicStatus(epics.get(epicId)); // проверяем статус эпика после всех манипуляций
+        historyManager.remove(taskId);
         return subtasks.remove(taskId) != null;
     }
 
