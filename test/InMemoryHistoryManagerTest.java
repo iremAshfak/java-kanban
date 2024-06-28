@@ -9,7 +9,7 @@ public class InMemoryHistoryManagerTest {
 
 
     @Test
-    void noRepeatsInHistory() {
+    public void noRepeatsInHistory() {
         Task task = new Task("Test noRepeatsInHistory", "Test noRepeatsInHistory description", Status.NEW);
         taskManager.createTask(task);
         taskManager.getTask(task.getId());
@@ -20,7 +20,7 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void noTaskInHistoryAfterDeleting() {
+    public void noTaskInHistoryAfterDeleting() {
         Task task = new Task("Test noTaskInHistoryAfterDeleting", "Test noTaskInHistoryAfterDeleting description", Status.NEW);
         taskManager.createTask(task);
         taskManager.getTask(task.getId());
@@ -32,7 +32,7 @@ public class InMemoryHistoryManagerTest {
 
 
     @Test
-    void historySizeShouldBeUnlimited() {
+    public void historySizeShouldBeUnlimited() {
         for (int i = 0; i < 100; i++) {
             Task task = new Task("Test historySizeShouldBeUnlimited", "Test historySizeShouldBeUnlimited description", Status.NEW);
             taskManager.createTask(task);
