@@ -64,7 +64,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    private Node linkLast (Task task){
+    private Node linkLast(Task task) {
         Node node = new Node(task);
         if (first == null) {
             node.prev = null;
@@ -78,7 +78,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         return node;
     }
 
-    private ArrayList<Task> getTasks (ArrayList<Node> nodes){
+    private ArrayList<Task> getTasks(ArrayList<Node> nodes) {
         for (Node node : nodes) {
             tasks.add(node.value);
         }
