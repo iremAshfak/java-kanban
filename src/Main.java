@@ -31,12 +31,14 @@ public class Main {
         taskManager.getTask(0);
         taskManager.getTask(1);
         taskManager.getEpic(3);
+        taskManager.getTask(1);
         taskManager.getSubtask(6);
 
         System.out.println("//Тест 2: Получаем историю просмотров задач:");
         System.out.println();
         System.out.println(historyManager.getHistory());
         System.out.println();
+
 
 
         System.out.println("//Тест 3: Изменяем статусы задач и подзадач, проверяем статус эпика");
