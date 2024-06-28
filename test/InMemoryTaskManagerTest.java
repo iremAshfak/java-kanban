@@ -58,12 +58,12 @@ class InMemoryTaskManagerTest {
     void updateTaskTest() {
         Task task = new Task("Test updateTask", "Test updateTask description", Status.NEW);
         taskManager.createTask(task);
-        Task updated_task = new Task("Test updateTask", "Test updateTask description", Status.IN_PROGRESS, task.getId());
-        taskManager.updateTask(updated_task);
+        Task updatedTask = new Task("Test updateTask", "Test updateTask description", Status.IN_PROGRESS, task.getId());
+        taskManager.updateTask(updatedTask);
         final ArrayList<Task> tasks = taskManager.getTasks();
         Task savedTask = taskManager.getTask(task.getId());
 
-        assertEquals(updated_task, savedTask, "Задачи не совпадают.");
+        assertEquals(updatedTask, savedTask, "Задачи не совпадают.");
 
         assertEquals(1, tasks.size(), "Неверное количество задач.");
     }
@@ -74,12 +74,12 @@ class InMemoryTaskManagerTest {
         taskManager.createEpic(epic);
         Subtask subtask = new Subtask("Test updateSubtask", "Test updateSubtask description", Status.NEW, epic.getId());
         taskManager.createSubtask(subtask);
-        Subtask updated_subtask = new Subtask("Test updateSubtask", "Test updateSubtask description", Status.IN_PROGRESS, subtask.getId(),epic.getId());
-        taskManager.updateSubtask(updated_subtask);
+        Subtask updatedSubtask = new Subtask("Test updateSubtask", "Test updateSubtask description", Status.IN_PROGRESS, subtask.getId(),epic.getId());
+        taskManager.updateSubtask(updatedSubtask);
         final ArrayList<Subtask> subtasks = taskManager.getSubtasks();
         Subtask savedSubtask = taskManager.getSubtask(subtask.getId());
 
-        assertEquals(updated_subtask, savedSubtask, "Задачи не совпадают.");
+        assertEquals(updatedSubtask, savedSubtask, "Задачи не совпадают.");
 
         assertEquals(1, subtasks.size(), "Неверное количество задач.");
     }

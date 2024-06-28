@@ -43,11 +43,11 @@ public class Main {
 
         System.out.println("//Тест 3: Изменяем статусы задач и подзадач, проверяем статус эпика");
         System.out.println();
-        Task updated_task1 = new Task("Погладить шторы", "Нужен утюг", Status.IN_PROGRESS, 1);
-        Subtask updated_subtask1 = new Subtask("Составить оглавление", "Отправить научнику", Status.IN_PROGRESS, 4,2);
+        Task updatedTask1 = new Task("Погладить шторы", "Нужен утюг", Status.IN_PROGRESS, 1);
+        Subtask updatedSubtask1 = new Subtask("Составить оглавление", "Отправить научнику", Status.IN_PROGRESS, 4,2);
         System.out.println("Изменяем статусы задач:");
-        System.out.println("Обновленная задача: " + taskManager.updateTask(updated_task1));
-        System.out.println("Обновленная подзадача: " + taskManager.updateSubtask(updated_subtask1));
+        System.out.println("Обновленная задача: " + taskManager.updateTask(updatedTask1));
+        System.out.println("Обновленная подзадача: " + taskManager.updateSubtask(updatedSubtask1));
         System.out.println("Проверяем статус эпика: " + taskManager.getEpic(2));
         System.out.println();
 
