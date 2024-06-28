@@ -1,7 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-class ManagersTest {
+public class ManagersTest {
 
     @Test
     void testGetDefaultInMemoryTaskManager() {
