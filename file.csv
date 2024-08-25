@@ -1,0 +1,5 @@
+type,id,name,description,status,epicId
+TASK,0,П,Нтюг,NEW,null
+EPIC,2,Написать и защитить диплом,По лингвистике,IN_PROGRESS,null
+SUBTASK,4,Составить оглавление,Отправить научнику,IN_PROGRESS,2
+SUBTASK,5,Написать первую часть,Это теоретическая глава,NEW,2
