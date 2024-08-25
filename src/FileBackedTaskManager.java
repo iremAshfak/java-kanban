@@ -9,7 +9,7 @@ import java.io.FileWriter;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private final static String PATH_TO_FILE = "./file.csv";
+    private static final String PATH_TO_FILE = "./file.csv";
     protected static int maxId = 0;
 
     public FileBackedTaskManager(Path path) {
@@ -24,7 +24,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
             for (int i = 1; i < lines.size(); i++) {
                 Task task = CSVFormatter.fromString(lines.get(i));
-                switch(task.getType()) {
+                switch (task.getType()) {
                     case TASK -> fileBackedTaskManager.tasks.put(task.getId(), task);
                     case EPIC -> fileBackedTaskManager.epics.put(task.getId(), (Epic) task);
                     case SUBTASK -> fileBackedTaskManager.subtasks.put(task.getId(), (Subtask) task);
