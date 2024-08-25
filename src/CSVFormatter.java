@@ -1,7 +1,6 @@
-import java.nio.file.Path;
 import static java.lang.Integer.parseInt;
 
-public class CSVFormatter{
+public class CSVFormatter {
 
     private CSVFormatter() {
     }
