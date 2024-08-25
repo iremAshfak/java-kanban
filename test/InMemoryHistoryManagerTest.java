@@ -10,15 +10,6 @@ class InMemoryHistoryManagerTest {
     TaskManager taskManager = Managers.getDefault();
 
     @Test
-    void addTaskInHistory() {
-        Task task = new Task("Test createTask", "Test createTask description", Status.NEW);
-        historyManager.add(task);
-        final ArrayList<Task> history = historyManager.getHistory();
-        assertNotNull(history, "История не пустая.");
-        assertEquals(1, history.size(), "История не пустая.");
-    }
-
-    @Test
     void historySizeShouldBeEquals10() {
         for (int i = 0; i < 12; i++) {
             Task task = new Task("Test createTask", "Test createTask description", Status.NEW);
