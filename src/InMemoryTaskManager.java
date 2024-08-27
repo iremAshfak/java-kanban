@@ -6,7 +6,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private int nextId = FileBackedTaskManager.maxId;
+    protected int nextId;
     private Integer taskId;
 
     // Методы для задач
@@ -29,7 +29,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task createTask(Task task) {
-        task.setType(Type.TASK);
         task.setId(getNextId());
         tasks.put(task.getId(), task);
         return task;
@@ -72,7 +71,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic createEpic(Epic epic) {
-        epic.setType(Type.EPIC);
         epic.setStatus(Status.NEW); // У всех новых эпиков статус NEW устанавливается по умолчанию
         epic.setId(getNextId());
         epics.put(epic.getId(), epic);
@@ -125,7 +123,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Subtask createSubtask(Subtask subtask) {
-        subtask.setType(Type.SUBTASK);
         for (HashMap.Entry<Integer, Epic> entry : epics.entrySet()) { // Для каждой пары id и эпика
             if (subtask.getEpicId() == entry.getKey()) { // если подзадача принадлежит данному эпику
                 Epic epic = entry.getValue();
@@ -140,7 +137,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Subtask updateSubtask(Subtask subtask) {
-        subtask.setType(Type.SUBTASK);
         taskId = subtask.getId();
         if (taskId == null || !subtasks.containsKey(taskId)) {
             return null;
@@ -203,5 +199,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     private int getNextId() {
         return nextId++;
+    }
+
+    protected void setNextId(int i) { nextId = i;
     }
 }

@@ -18,7 +18,6 @@ public class CSVFormatter {
         String[] splitTask = csvRow.split(",");
         if (splitTask[0].equals(String.valueOf(Type.TASK))) {
             Task task = new Task();
-            task.setType(Type.valueOf(splitTask[0]));
             task.setId(parseInt(splitTask[1]));
             task.setName(splitTask[2]);
             task.setDescription(splitTask[3]);
@@ -26,7 +25,6 @@ public class CSVFormatter {
             return task;
         } else if (splitTask[0].equals(String.valueOf(Type.EPIC))) {
             Epic epic = new Epic();
-            epic.setType(Type.valueOf(splitTask[0]));
             epic.setId(parseInt(splitTask[1]));
             epic.setName(splitTask[2]);
             epic.setDescription(splitTask[3]);
@@ -34,7 +32,6 @@ public class CSVFormatter {
             return epic;
         } else {
             Subtask subtask = new Subtask();
-            subtask.setType(Type.valueOf(splitTask[0]));
             subtask.setId(parseInt(splitTask[1]));
             subtask.setName(splitTask[2]);
             subtask.setDescription(splitTask[3]);

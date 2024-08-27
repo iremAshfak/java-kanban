@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -84,8 +85,9 @@ public class Main {
         System.out.println("Список подзадач:");
         System.out.println(fileBackedTaskManager.getSubtasks());
 
-        FileBackedTaskManager secondFileBackedTaskManager = fileBackedTaskManager.loadFromFile(file);
+
+        FileBackedTaskManager secondFileBackedTaskManager = FileBackedTaskManager.loadFromFile(Paths.get("file.csv"));
         Task secondTask = new Task("Доделать ТЗ", "Яндекс Практикума", Status.NEW);
-        secondFileBackedTaskManager.createTask(secondTask);
+        secondFileBackedTaskManager.createTask(secondTask); // во втором менеджере сохранены все задачи из первого менеджера и добавлена новая
     }
 }

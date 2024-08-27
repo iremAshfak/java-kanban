@@ -1,5 +1,6 @@
 public class Subtask extends Task {
     private Integer epicId;
+    private Type type = Type.SUBTASK;
 
     public Subtask(String name, String description, Status status, Integer epicId) {
         super(name, description, status);
@@ -13,6 +14,11 @@ public class Subtask extends Task {
 
     public Subtask() {
 
+    }
+
+    @Override
+    public Type getType() {
+        return type;
     }
 
     @Override

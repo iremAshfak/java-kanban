@@ -1,5 +1,4 @@
 import java.io.BufferedWriter;
-import java.io.File;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
@@ -9,18 +8,19 @@ import java.io.FileWriter;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private static final String PATH_TO_FILE = "./file.csv";
     protected static int maxId = 0;
+    private final Path file;
 
-    public FileBackedTaskManager(Path path) {
-        File file = new File(String.valueOf(path));
+    public FileBackedTaskManager(Path file) {
+        super();
+        this.file = file;
     }
 
-    public static FileBackedTaskManager loadFromFile(File file) {
-        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(Path.of(PATH_TO_FILE));
+    public static FileBackedTaskManager loadFromFile(Path file) {
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
 
         try {
-            List<String> lines = Files.readAllLines(Path.of(PATH_TO_FILE));
+            List<String> lines = Files.readAllLines(file);
 
             for (int i = 1; i < lines.size(); i++) {
                 Task task = CSVFormatter.fromString(lines.get(i));
@@ -37,6 +37,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } catch (IOException e) {
             throw ManagerSaveException.loadException(e);
         }
+        fileBackedTaskManager.setNextId(maxId + 1);
         return fileBackedTaskManager;
     }
 
@@ -126,7 +127,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private void save() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(PATH_TO_FILE))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file.toFile()))) {
             bw.write(CSVFormatter.getHeader());
             bw.newLine();
 
