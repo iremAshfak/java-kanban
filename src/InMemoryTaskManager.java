@@ -201,6 +201,7 @@ public class InMemoryTaskManager implements TaskManager {
         return nextId++;
     }
 
-    protected void setNextId(int i) { nextId = i;
+    protected void setNextId(int i) {
+        nextId = i;
     }
 }
