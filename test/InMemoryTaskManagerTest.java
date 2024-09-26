@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
@@ -6,6 +5,33 @@ import java.util.ArrayList;
 class InMemoryTaskManagerTest {
 
     TaskManager taskManager = Managers.getDefault();
+
+    @Test
+    void checkEpicStatusTest() {
+        Epic epic = new Epic("Test checkEpicStatus", "Test checkEpicStatus description");
+        taskManager.createEpic(epic);
+        Subtask subtask1 = new Subtask("Test checkEpicStatus", "Test checkEpicStatus description", Status.NEW, epic.getId());
+        Subtask subtask2 = new Subtask("Test checkEpicStatus", "Test checkEpicStatus description", Status.NEW, epic.getId());
+        taskManager.createSubtask(subtask1);
+        taskManager.createSubtask(subtask2);
+        assertEquals(Status.NEW, epic.getStatus(), "Некорректный статус эпика");
+
+        Epic epic1 = new Epic("Test checkEpicStatus", "Test checkEpicStatus description");
+        taskManager.createEpic(epic1);
+        Subtask subtask3 = new Subtask("Test checkEpicStatus", "Test checkEpicStatus description", Status.DONE, epic1.getId());
+        Subtask subtask4 = new Subtask("Test checkEpicStatus", "Test checkEpicStatus description", Status.NEW, epic1.getId());
+        taskManager.createSubtask(subtask3);
+        taskManager.createSubtask(subtask4);
+        assertEquals(Status.IN_PROGRESS, epic1.getStatus(), "Некорректный статус эпика");
+
+        Epic epic3 = new Epic("Test checkEpicStatus", "Test checkEpicStatus description");
+        taskManager.createEpic(epic3);
+        Subtask subtask5 = new Subtask("Test checkEpicStatus", "Test checkEpicStatus description", Status.DONE, epic3.getId());
+        Subtask subtask6 = new Subtask("Test checkEpicStatus", "Test checkEpicStatus description", Status.DONE, epic3.getId());
+        taskManager.createSubtask(subtask5);
+        taskManager.createSubtask(subtask6);
+        assertEquals(Status.DONE, epic3.getStatus(), "Некорректный статус эпика");
+    }
 
     @Test
     void createTaskTest() {
