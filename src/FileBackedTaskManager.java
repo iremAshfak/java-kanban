@@ -8,7 +8,6 @@ import java.io.FileWriter;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    protected static int maxId = 0;
     private final Path file;
 
     public FileBackedTaskManager(Path file) {
@@ -19,9 +18,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static FileBackedTaskManager loadFromFile(Path file) {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
 
+        int maxId = 0;
         try {
             List<String> lines = Files.readAllLines(file);
-
             for (int i = 1; i < lines.size(); i++) {
                 Task task = CSVFormatter.fromString(lines.get(i));
                 switch (task.getType()) {
@@ -29,8 +28,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     case EPIC -> fileBackedTaskManager.epics.put(task.getId(), (Epic) task);
                     case SUBTASK -> fileBackedTaskManager.subtasks.put(task.getId(), (Subtask) task);
                 }
-               if (maxId < task.getId()) {
-                   maxId = task.getId();
+                if (maxId < task.getId()) {
+                    maxId = task.getId();
                 }
             }
 
