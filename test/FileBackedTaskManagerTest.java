@@ -1,17 +1,24 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FileBackedTaskManagerTest {
 
     File file;
 
+    @BeforeEach
+    void beforeEach() throws Exception {
+        this.file = File.createTempFile("tasks", ".csv");
+        assertNotNull(file, "Файл не создан");
+        assertTrue(file.exists(), "Файл не создан");
+    }
+
     @Test
-    void checkEpicStatusTest() throws IOException {
-        this.file = File.createTempFile("time", "filee");
+    void fileBackedTaskManagerTest() throws IOException {
         FileBackedTaskManager taskManager = new FileBackedTaskManager(file.toPath());
 
         Task task1 = new Task("Погладить шторы", "Нужен утюг", Status.NEW);
@@ -23,18 +30,11 @@ public class FileBackedTaskManagerTest {
         taskManager.createEpic(epic1);
         taskManager.createEpic(epic2);
         taskManager.createSubtask(subtask1);
-        String content = Files.readString(file.toPath());
 
         FileBackedTaskManager secondTaskManager = FileBackedTaskManager.loadFromFile(file.toPath());
+        ArrayList<Task> tasksFromTaskManager = secondTaskManager.getTasks();
+        ArrayList<Task> tasksFromSecondTaskManager = taskManager.getTasks();
 
-        secondTaskManager.createTask(task1);
-        secondTaskManager.createEpic(epic1);
-        secondTaskManager.createEpic(epic2);
-        secondTaskManager.createSubtask(subtask1);
-        String secondContent = Files.readString(file.toPath()); // создаем идентичные задачи в том же порядке
-
-        assertNotEquals(content, secondContent, "Задачи из первого taskManager не были сохранены");
-        /* если бы задачи из первого taskManager не сохранялись и не использовались для создания secondTaskManager,
-         содержимое файлов было бы одинаковым. */
+        assertEquals(tasksFromTaskManager,tasksFromSecondTaskManager); // сравнила содержимое двух менеджеров
     }
 }
