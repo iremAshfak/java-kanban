@@ -1,4 +1,4 @@
-package httpApiServer;
+package httpserver;
 import taskmanager.Managers;
 import taskmanager.TaskManager;
 import com.sun.net.httpserver.HttpServer;

@@ -3,7 +3,7 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import httpApiServer.HttpTaskServer;
+import httpserver.HttpTaskServer;
 import taskmanager.*;
 
 import java.io.IOException;
