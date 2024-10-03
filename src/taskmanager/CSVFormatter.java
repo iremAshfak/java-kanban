@@ -1,4 +1,4 @@
-package taskManager;
+package taskmanager;
 
 import static java.lang.Integer.parseInt;
 

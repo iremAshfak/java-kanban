@@ -1,7 +1,6 @@
-package taskManager;
+package taskmanager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface TaskManager {
     // Методы для задач

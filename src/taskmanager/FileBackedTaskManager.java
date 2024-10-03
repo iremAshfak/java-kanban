@@ -1,4 +1,4 @@
-package taskManager;
+package taskmanager;
 
 import java.io.BufferedWriter;
 import java.nio.file.Files;
