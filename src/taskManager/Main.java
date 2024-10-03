@@ -1,3 +1,5 @@
+package taskManager;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -12,7 +14,7 @@ public class Main {
         Epic epic2 = new Epic("Сделать ТЗ-4", "В Яндекс Практикуме");
         Subtask subtask1 = new Subtask("Составить оглавление", "Отправить научнику", Status.NEW, 2);
         Subtask subtask2 = new Subtask("Написать первую часть", "Это теоретическая глава", Status.NEW, 2);
-        Subtask subtask3 = new Subtask("Протестировать программу", "Дописать Main", Status.IN_PROGRESS, 3);
+        Subtask subtask3 = new Subtask("Протестировать программу", "Дописать taskManager.Main", Status.IN_PROGRESS, 3);
 
         inMemoryTaskManager.createTask(task1);
         inMemoryTaskManager.createTask(task2);
