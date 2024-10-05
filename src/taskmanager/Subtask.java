@@ -2,7 +2,6 @@ package taskmanager;
 
 public class Subtask extends Task {
     private Integer epicId;
-    private Type type = Type.SUBTASK;
 
     public Subtask(String name, String description, Integer epicId) {
         super(name, description);
@@ -21,11 +20,6 @@ public class Subtask extends Task {
 
     public Subtask() {
 
-    }
-
-    @Override
-    public Type getType() {
-        return type;
     }
 
     @Override

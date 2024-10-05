@@ -1,19 +1,20 @@
 package httpserver;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
 import taskmanager.Epic;
-import taskmanager.TaskManager;
+import taskmanager.InMemoryTaskManager;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.ArrayList;
 
 public class EpicHttpHandler extends BaseHttpHandler {
 
-    private final TaskManager taskManager;
 
-    public EpicHttpHandler(TaskManager taskManager) {
-        this.taskManager = taskManager;
+    public EpicHttpHandler(InMemoryTaskManager taskManager, Gson gson) {
+        super(taskManager, gson);
     }
 
     @Override
@@ -22,12 +23,13 @@ public class EpicHttpHandler extends BaseHttpHandler {
         switch (exchange.getRequestMethod()) {
             case "GET":
                 if (id == null) {
-                    List<Epic> epics = taskManager.getEpics();
-                    String response = HttpTaskServer.getGson().toJson(epics);
+                    ArrayList<Epic> epics = taskManager.getEpics();
+                    String response = HttpTaskServer.getGson().toJson(epics, new TypeToken<ArrayList<Epic>>() {
+                    }.getType());
                     sendText(exchange, response);
                 } else {
                     Epic epic = taskManager.getEpic(id);
-                    String response = HttpTaskServer.getGson().toJson(epic);
+                    String response = HttpTaskServer.getGson().toJson(epic, Epic.class);
                     sendText(exchange, response);
                 }
                 break;
@@ -35,12 +37,12 @@ public class EpicHttpHandler extends BaseHttpHandler {
                 Epic epic = gson.fromJson(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8), Epic.class);
                 if (id == null) {
                     taskManager.createEpic(epic);
-                    String response = HttpTaskServer.getGson().toJson(epic);
-                    sendText(exchange, response);
+                    String response = HttpTaskServer.getGson().toJson(epic, Epic.class);
+                    sendTextPosted(exchange, response);
                 } else {
                     taskManager.updateEpic(epic);
-                    String response = HttpTaskServer.getGson().toJson(epic);
-                    sendText(exchange, response);
+                    String response = HttpTaskServer.getGson().toJson(epic, Epic.class);
+                    sendTextPosted(exchange, response);
                 }
                 break;
             case "DELETE":

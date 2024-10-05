@@ -1,6 +1,6 @@
 package httpserver;
+import taskmanager.InMemoryTaskManager;
 import taskmanager.Managers;
-import taskmanager.TaskManager;
 import com.sun.net.httpserver.HttpServer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,12 +14,25 @@ public class HttpTaskServer {
     public static final int PORT = 8080;
 
     private final HttpServer httpServer;
-    private final TaskManager taskManager;
+    private final InMemoryTaskManager taskManager;
+    private final Gson gson;
 
-    public HttpTaskServer(TaskManager taskManager) throws IOException {
+    public HttpTaskServer(InMemoryTaskManager taskManager) throws IOException {
         this.taskManager = taskManager;
-        this.httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
-        this.httpServer.createContext("/tasks", new TaskHttpHandler(taskManager));
+        try {
+            this.httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
+        } catch (IOException e) {
+            throw new RuntimeException("Не удалось создать сервер");
+        }
+
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(Duration.class, new DurationAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
+
+        this.httpServer.createContext("/tasks", new TaskHttpHandler(taskManager, gson));
+        this.httpServer.createContext("/epics", new EpicHttpHandler(taskManager, gson));
+        this.httpServer.createContext("/subtasks", new SubtaskHttpHandler(taskManager, gson));
     }
 
     public void start() {
@@ -31,7 +44,7 @@ public class HttpTaskServer {
     }
 
     public static void main(String[] args) throws IOException {
-        TaskManager taskManager = Managers.getDefault();
+        InMemoryTaskManager taskManager = Managers.getDefault();
         HttpTaskServer httpTaskServer = new HttpTaskServer(taskManager);
         httpTaskServer.start();
     }

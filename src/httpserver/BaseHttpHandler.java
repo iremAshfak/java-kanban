@@ -21,10 +21,18 @@ public abstract class BaseHttpHandler implements HttpHandler {
     protected BaseHttpHandler() {
     }
 
-    protected void sendText(HttpExchange exchange, String text) throws IOException {
+    protected void sendText(HttpExchange h, String text) throws IOException {
+        sendTextResponse(h, text, 200);
+    }
+
+    protected void sendTextPosted(HttpExchange h, String text) throws IOException {
+        sendTextResponse(h, text, 201);
+    }
+
+    protected void sendTextResponse(HttpExchange exchange, String text, int rCode) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
         exchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
-        exchange.sendResponseHeaders(200, resp.length);
+        exchange.sendResponseHeaders(rCode, resp.length);
         exchange.getResponseBody().write(resp);
         exchange.close();
     }

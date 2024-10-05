@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
+
 public class Epic extends Task {
     private final ArrayList<Integer> subtasksIds = new ArrayList<>();
     private LocalDateTime endTime;
-    private Type type = Type.EPIC;
 
     public Epic(String name, String description) {
         super(name, description);
@@ -21,10 +21,6 @@ public class Epic extends Task {
 
     public Epic(Epic epic) {
         super(epic.getName(), epic.getDescription());
-        this.type = epic.getType();
-        this.duration = epic.getDuration();
-        this.startTime = epic.getStartTime();
-        this.endTime = epic.getStartTime();
     }
 
     private void updateDatesAndDuration(HashMap<Integer, Subtask> subtasks) {
@@ -46,12 +42,6 @@ public class Epic extends Task {
                 .max(Comparator.comparing(Task::getEndTime))
                 .map(Task::getEndTime)
                 .orElse(null);
-    }
-
-
-    @Override
-    public Type getType() {
-        return type;
     }
 
     public ArrayList<Integer> getSubtasksIds() {

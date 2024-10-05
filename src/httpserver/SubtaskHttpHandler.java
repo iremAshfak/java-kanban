@@ -1,19 +1,20 @@
 package httpserver;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
+import taskmanager.InMemoryTaskManager;
 import taskmanager.Subtask;
-import taskmanager.TaskManager;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.ArrayList;
 
 public class SubtaskHttpHandler extends BaseHttpHandler {
 
-    private final TaskManager taskManager;
 
-    public SubtaskHttpHandler(TaskManager taskManager) {
-        this.taskManager = taskManager;
+    public SubtaskHttpHandler(InMemoryTaskManager taskManager, Gson gson) {
+        super(taskManager, gson);
     }
 
     @Override
@@ -22,12 +23,13 @@ public class SubtaskHttpHandler extends BaseHttpHandler {
         switch (exchange.getRequestMethod()) {
             case "GET":
                 if (id == null) {
-                    List<Subtask> subtasks = taskManager.getSubtasks();
-                    String response = HttpTaskServer.getGson().toJson(subtasks);
+                    ArrayList<Subtask> subtasks = taskManager.getSubtasks();
+                    String response = HttpTaskServer.getGson().toJson(subtasks, new TypeToken<ArrayList<Subtask>>() {
+                    }.getType());
                     sendText(exchange, response);
                 } else {
                     Subtask subtask = taskManager.getSubtask(id);
-                    String response = HttpTaskServer.getGson().toJson(subtask);
+                    String response = HttpTaskServer.getGson().toJson(subtask, Subtask.class);
                     sendText(exchange, response);
                 }
                 break;
@@ -35,12 +37,12 @@ public class SubtaskHttpHandler extends BaseHttpHandler {
                 Subtask subtask = gson.fromJson(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8), Subtask.class);
                 if (id == null) {
                     taskManager.createSubtask(subtask);
-                    String response = HttpTaskServer.getGson().toJson(subtask);
-                    sendText(exchange, response);
+                    String response = HttpTaskServer.getGson().toJson(subtask, Subtask.class);
+                    sendTextPosted(exchange, response);
                 } else {
                     taskManager.updateSubtask(subtask);
-                    String response = HttpTaskServer.getGson().toJson(subtask);
-                    sendText(exchange, response);
+                    String response = HttpTaskServer.getGson().toJson(subtask, Subtask.class);
+                    sendTextPosted(exchange, response);
                 }
                 break;
             case "DELETE":
