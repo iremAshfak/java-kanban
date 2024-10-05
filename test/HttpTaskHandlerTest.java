@@ -20,9 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HttpTaskHandlerTest {
 
-    // создаём экземпляр InMemoryTaskManager
+
     InMemoryTaskManager manager = new InMemoryTaskManager();
-    // передаём его в качестве аргумента в конструктор HttpTaskServer
     HttpTaskServer taskServer = new HttpTaskServer(manager);
     Gson gson = HttpTaskServer.getGson();
 
