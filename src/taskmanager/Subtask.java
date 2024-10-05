@@ -2,6 +2,7 @@ package taskmanager;
 
 public class Subtask extends Task {
     private Integer epicId;
+    protected Type type = Type.SUBTASK;
 
     public Subtask(String name, String description, Integer epicId) {
         super(name, description);
@@ -29,5 +30,9 @@ public class Subtask extends Task {
 
     public void setEpicId(Integer epicId) {
         this.epicId = epicId;
+    }
+
+    public Type getType() {
+        return type;
     }
 }

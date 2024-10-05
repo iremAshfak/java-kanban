@@ -10,6 +10,7 @@ import java.util.HashMap;
 public class Epic extends Task {
     private final ArrayList<Integer> subtasksIds = new ArrayList<>();
     private LocalDateTime endTime;
+    protected Type type = Type.EPIC;
 
     public Epic(String name, String description) {
         super(name, description);
@@ -55,6 +56,10 @@ public class Epic extends Task {
     @Override
     public LocalDateTime getEndTime() {
         return endTime;
+    }
+
+    public Type getType() {
+        return type;
     }
 
 }
