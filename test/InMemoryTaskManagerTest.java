@@ -172,16 +172,4 @@ class InMemoryTaskManagerTest {
         Subtask subtask2 = new Subtask("Subtask1EqualSubtask2", "Subtask1EqualSubtask2", Status.NEW, subtask1.getId(), epic.getId());
         assertTrue(subtask1.getId().equals(subtask2.getId()));
     }
-
-    /* @Test
-    void epicAsSubtaskShouldBeFailed() {
-        taskManager.Epic epic = taskManager.createEpic(new taskManager.Epic("Test epicAsSubtask", "Test epicAsSubtask description"));
-        taskManager.createSubtask(epic);
-    }
-
-    @Test
-    void subtaskAsEpicShouldBeFailed() {
-        taskManager.Subtask subtask = new taskManager.Subtask("Test subtaskAsEpic", "Test subtaskAsEpic description", taskManager.Status.NEW, subtask.getId());
-    }
-*/
 }
