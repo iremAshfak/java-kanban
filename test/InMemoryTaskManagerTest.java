@@ -1,4 +1,6 @@
 import org.junit.jupiter.api.Test;
+import taskmanager.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 
@@ -163,23 +165,11 @@ class InMemoryTaskManagerTest {
 
     @Test
     void subtask1ShouldBeEqualSubtask2() {
-        Epic epic = new Epic("Epic", "Test Epic");
+        Epic epic = new Epic("taskManager.Epic", "Test taskManager.Epic");
         taskManager.createEpic(epic);
         Subtask subtask1 = new Subtask("Test subtask1EqualSubtask2", "Test subtask1EqualSubtask2 description", Status.NEW, epic.getId());
         taskManager.createSubtask(subtask1);
         Subtask subtask2 = new Subtask("Subtask1EqualSubtask2", "Subtask1EqualSubtask2", Status.NEW, subtask1.getId(), epic.getId());
         assertTrue(subtask1.getId().equals(subtask2.getId()));
     }
-
-    /* @Test
-    void epicAsSubtaskShouldBeFailed() {
-        Epic epic = taskManager.createEpic(new Epic("Test epicAsSubtask", "Test epicAsSubtask description"));
-        taskManager.createSubtask(epic);
-    }
-
-    @Test
-    void subtaskAsEpicShouldBeFailed() {
-        Subtask subtask = new Subtask("Test subtaskAsEpic", "Test subtaskAsEpic description", Status.NEW, subtask.getId());
-    }
-*/
 }

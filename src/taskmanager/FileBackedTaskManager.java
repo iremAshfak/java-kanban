@@ -1,3 +1,5 @@
+package taskmanager;
+
 import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -24,9 +26,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             for (int i = 1; i < lines.size(); i++) {
                 Task task = CSVFormatter.fromString(lines.get(i));
                 switch (task.getType()) {
-                    case TASK -> fileBackedTaskManager.tasks.put(task.getId(), task);
-                    case EPIC -> fileBackedTaskManager.epics.put(task.getId(), (Epic) task);
-                    case SUBTASK -> fileBackedTaskManager.subtasks.put(task.getId(), (Subtask) task);
+                    case Type.TASK -> fileBackedTaskManager.tasks.put(task.getId(), task);
+                    case Type.EPIC -> fileBackedTaskManager.epics.put(task.getId(), (Epic) task);
+                    case Type.SUBTASK -> fileBackedTaskManager.subtasks.put(task.getId(), (Subtask) task);
                 }
                 if (maxId < task.getId()) {
                     maxId = task.getId();
