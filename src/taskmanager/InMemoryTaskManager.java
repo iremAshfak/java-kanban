@@ -1,3 +1,5 @@
+package taskmanager;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -240,7 +242,7 @@ public class InMemoryTaskManager implements TaskManager {
         return endTime1.isAfter(startTime1) && startTime2.isBefore(endTime1);
     }
 
-    private Set<Task> getPrioritizedTasks() {
+    public Set<Task> getPrioritizedTasks() {
         return prioritizedTasks;
     }
 

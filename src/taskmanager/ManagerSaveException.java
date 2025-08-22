@@ -1,3 +1,5 @@
+package taskmanager;
+
 public class ManagerSaveException extends RuntimeException {
 
     private static final String MSG_SAVE = "Ошибка в процессе сохранения";

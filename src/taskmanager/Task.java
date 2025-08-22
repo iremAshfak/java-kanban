@@ -1,3 +1,5 @@
+package taskmanager;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -7,7 +9,7 @@ public class Task {
     private String description;
     private Integer id;
     private Status status;
-    private Type type = Type.TASK;
+    protected Type type = Type.TASK;
     protected Duration duration;
     protected LocalDateTime startTime;
 
@@ -44,7 +46,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task {" +
+        return "taskManager.Task {" +
                 "name = " + name + '\n' +
                 "description = " + description + '\n' +
                 "id = " + id + ", " +
